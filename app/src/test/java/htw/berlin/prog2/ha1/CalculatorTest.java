@@ -91,8 +91,9 @@ class CalculatorTest {
 
     //TODO hier weitere Tests erstellen
     @Test
-    @DisplayName("should display result after subtra two positive multi-digit numbers")
-    void testPositiveSubstraction() {
+    @DisplayName("should display result after subtracting two positive multi-digit numbers")
+    //Grüner Test Aufgabe 1: Überprüft ob 20 - 25 = -5 ergibt
+    void testPositiveSubtraction() {
         Calculator calc = new Calculator();
 
         calc.pressDigitKey(2);
@@ -107,5 +108,38 @@ class CalculatorTest {
 
         assertEquals(expected, actual);
     }
+    @Test
+    @DisplayName("should display positive number after pressing negative Operation Key twice")
+    //Redundanter grüner Test.
+    void testDoubleNegative(){
+        Calculator calc = new Calculator();
+        calc.pressDigitKey(7);
+        calc.pressNegativeKey();
+        calc.pressNegativeKey();
+
+        String expected = "7";
+        String actual = calc.readScreen();
+        assertEquals(expected, actual);
+
+
+    }
+    @Test
+    @DisplayName("double pressing clear should put the calculator into default state with no saved data")
+    //Roter Test Aufgabe 2.1: Überprüfen der Clear Funktion
+    void testClearState(){
+        Calculator calc = new Calculator();
+        calc.pressDigitKey(3);
+        calc.pressBinaryOperationKey("+");
+        calc.pressDigitKey(2);
+        calc.pressClearKey();
+        calc.pressDigitKey(3);
+        calc.pressEqualsKey();
+
+        String expected = "6";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+    }
+
 }
 

@@ -44,6 +44,11 @@ public class Calculator {
      * Werte sowie der aktuelle Operationsmodus zurückgesetzt, so dass der Rechner wieder
      * im Ursprungszustand ist.
      */
+
+    /**Bug: Double Press Funktion wird bei einmaligem drücken aktiviert
+     *      Single Press Funktion nicht realisiert
+    */
+
     public void pressClearKey() {
         screen = "0";
         latestOperation = "";
