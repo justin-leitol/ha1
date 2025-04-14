@@ -141,5 +141,18 @@ class CalculatorTest {
         assertEquals(expected, actual);
     }
 
-}
+    @Test
+    @DisplayName("division with 0 results in error")
+    void testDivision0(){
+        Calculator calc = new Calculator();
+        calc.pressDigitKey(3);
+        calc.pressBinaryOperationKey("/");
+        calc.pressDigitKey(0);
 
+        String expected = "Error";
+        String actual = calc.readScreen();
+
+        assertEquals(expected, actual);
+
+    }
+}
