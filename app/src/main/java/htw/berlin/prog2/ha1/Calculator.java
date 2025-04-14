@@ -23,7 +23,7 @@ public class Calculator {
 
     /**
      * Empfängt den Wert einer gedrückten Zifferntaste. Da man nur eine Taste auf einmal
-     * drücken kann muss der Wert positiv und einstellig sein und zwischen 0 und 9 liegen.
+     * drücken kann, muss der Wert positiv und einstellig sein und zwischen 0 und 9 liegen.
      * Führt in jedem Fall dazu, dass die gerade gedrückte Ziffer auf dem Bildschirm angezeigt
      * oder rechts an die zuvor gedrückte Ziffer angehängt angezeigt wird.
      * @param digit Die Ziffer, deren Taste gedrückt wurde
@@ -36,13 +36,13 @@ public class Calculator {
         screen = screen + digit;
     }
 
-    /**
-     * Empfängt den Befehl der C- bzw. CE-Taste (Clear bzw. Clear Entry).
-     * Einmaliges Drücken der Taste löscht die zuvor eingegebenen Ziffern auf dem Bildschirm
-     * so dass "0" angezeigt wird, jedoch ohne zuvor zwischengespeicherte Werte zu löschen.
-     * Wird daraufhin noch einmal die Taste gedrückt, dann werden auch zwischengespeicherte
-     * Werte sowie der aktuelle Operationsmodus zurückgesetzt, so dass der Rechner wieder
-     * im Ursprungszustand ist.
+    /*
+      Empfängt den Befehl der C- bzw. CE-Taste (Clear bzw. Clear Entry).
+      Einmaliges Drücken der Taste löscht die zuvor eingegebenen Ziffern auf dem Bildschirm
+      so dass "0" angezeigt wird, jedoch ohne zuvor zwischengespeicherte Werte zu löschen.
+      Wird daraufhin noch einmal die Taste gedrückt, dann werden auch zwischengespeicherte
+      Werte sowie der aktuelle Operationsmodus zurückgesetzt, so dass der Rechner wieder
+      im Ursprungszustand ist.
      */
 
     /**Bug: Double Press Funktion wird bei einmaligem drücken aktiviert
@@ -113,14 +113,18 @@ public class Calculator {
         screen = screen.startsWith("-") ? screen.substring(1) : "-" + screen;
     }
 
+    /*
+      Empfängt den Befehl der gedrückten "="-Taste.
+      Wurde zuvor keine Operationstaste gedrückt, passiert nichts.
+      Wurde zuvor eine binäre Operationstaste gedrückt und zwei Operanden eingegeben, wird das
+      Ergebnis der Operation angezeigt. Falls hierbei eine Division durch Null auftritt, wird "Error" angezeigt.
+      Wird die Taste weitere Male gedrückt (ohne andere Tasten dazwischen), so wird die letzte
+      Operation (ggf. inklusive letztem Operand) erneut auf den aktuellen Bildschirminhalt angewandt
+      und das Ergebnis direkt angezeigt.
+     */
+
     /**
-     * Empfängt den Befehl der gedrückten "="-Taste.
-     * Wurde zuvor keine Operationstaste gedrückt, passiert nichts.
-     * Wurde zuvor eine binäre Operationstaste gedrückt und zwei Operanden eingegeben, wird das
-     * Ergebnis der Operation angezeigt. Falls hierbei eine Division durch Null auftritt, wird "Error" angezeigt.
-     * Wird die Taste weitere Male gedrückt (ohne andere Tasten dazwischen), so wird die letzte
-     * Operation (ggf. inklusive letztem Operand) erneut auf den aktuellen Bildschirminhalt angewandt
-     * und das Ergebnis direkt angezeigt.
+     * Bug: Division mit 0 resultiert nicht in Error
      */
     public void pressEqualsKey() {
         var result = switch(latestOperation) {
@@ -130,7 +134,11 @@ public class Calculator {
             case "/" -> latestValue / Double.parseDouble(screen);
             default -> throw new IllegalArgumentException();
         };
-        screen = Double.toString(result);
+        if (latestOperation.equals("/") && (latestValue == 0 || Double.parseDouble(screen) == 0)) {
+            screen = "Error";
+        } else {
+            screen = Double.toString(result);
+        }
         if(screen.equals("Infinity")) screen = "Error";
         if(screen.endsWith(".0")) screen = screen.substring(0,screen.length()-2);
         if(screen.contains(".") && screen.length() > 11) screen = screen.substring(0, 10);
