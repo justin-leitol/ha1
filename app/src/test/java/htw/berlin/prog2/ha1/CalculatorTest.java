@@ -124,7 +124,7 @@ class CalculatorTest {
 
     }
     @Test
-    @DisplayName("double pressing clear should put the calculator into default state with no saved data")
+    @DisplayName("single pressing clear should only delete last number")
     //Roter Test Aufgabe 2.1: Überprüfen der Clear Funktion
     void testClearState(){
         Calculator calc = new Calculator();
@@ -156,4 +156,5 @@ class CalculatorTest {
         assertEquals(expected, actual);
 
     }
+
 }
